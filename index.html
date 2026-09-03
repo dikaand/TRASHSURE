@@ -1,2317 +1,1475 @@
 ```html
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>TRASHSURE — Leave Memories, Not Trash.</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
-:root {
-    --black: #101410;
-    --dark: #172019;
-    --green: #c8f169;
-    --green-dark: #35552e;
-    --cream: #f3f0e8;
-    --white: #ffffff;
-    --gray: #a7afa5;
-    --line: rgba(255,255,255,.13);
+:root{
+    --black:#101410;
+    --dark:#172019;
+    --green:#c8f169;
+    --green-dark:#35552e;
+    --cream:#f3f0e8;
+    --white:#ffffff;
+    --gray:#a7afa5;
+    --line:rgba(255,255,255,.12);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-html,
-body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+html{
+    scroll-behavior:smooth;
 }
 
-body {
-    font-family: "DM Sans", sans-serif;
-    background: var(--black);
-    color: var(--black);
+body{
+    font-family:"DM Sans",sans-serif;
+    background:var(--black);
+    color:var(--cream);
+    line-height:1.6;
 }
 
-/* =========================
-   PAGE SYSTEM
-========================= */
-
-.page {
-    position: absolute;
-    inset: 0;
-
-    width: 100vw;
-    height: 100vh;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    opacity: 0;
-    visibility: hidden;
-
-    transform: translateX(40px);
-
-    transition:
-        opacity .45s ease,
-        transform .45s ease,
-        visibility .45s ease;
-
-    z-index: 1;
+a{
+    color:inherit;
+    text-decoration:none;
 }
 
-.page.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-    z-index: 10;
+.container{
+    width:min(1180px,90%);
+    margin:auto;
 }
 
-/* =========================
-   NAVBAR
-========================= */
-
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 76px;
-
-    padding: 0 5%;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    background: rgba(16,20,16,.90);
-    backdrop-filter: blur(15px);
-
-    border-bottom: 1px solid var(--line);
-
-    z-index: 1000;
+/* NAVBAR */
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:1000;
+    padding:20px 0;
+    background:rgba(16,20,16,.88);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.07);
 }
 
-.logo {
-    color: var(--green);
-    font-family: "Space Grotesk";
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -1px;
-
-    cursor: pointer;
+.nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:30px;
 }
 
-.nav-links {
-    display: flex;
-    gap: 25px;
+.logo{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:24px;
+    font-weight:700;
+    letter-spacing:-1px;
 }
 
-.nav-links button {
-    background: none;
-    border: none;
-    color: #e7ebe5;
-
-    font-family: inherit;
-    font-size: 13px;
-
-    cursor: pointer;
-    transition: .25s;
+.logo span{
+    color:var(--green);
 }
 
-.nav-links button:hover,
-.nav-links button.active {
-    color: var(--green);
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:25px;
+    list-style:none;
 }
 
-.nav-button {
-    background: var(--green);
-    color: var(--black);
-
-    border: none;
-    border-radius: 50px;
-
-    padding: 12px 18px;
-
-    font-size: 12px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition: .25s;
+.nav-links a{
+    color:#c9cec7;
+    font-size:14px;
+    font-weight:500;
+    transition:.25s;
 }
 
-.nav-button:hover {
-    transform: translateY(-2px);
+.nav-links a:hover,
+.nav-links a.active{
+    color:var(--green);
 }
 
-/* =========================
-   PAGE NAVIGATION
-========================= */
-
-.page-controls {
-    position: fixed;
-
-    bottom: 25px;
-    right: 5%;
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    z-index: 1001;
+.nav-join{
+    background:var(--green);
+    color:var(--black)!important;
+    padding:11px 18px;
+    border-radius:100px;
+    font-weight:700!important;
 }
 
-.page-btn {
-    width: 45px;
-    height: 45px;
-
-    border-radius: 50%;
-
-    border: 1px solid rgba(255,255,255,.25);
-
-    background: rgba(16,20,16,.8);
-    color: white;
-
-    font-size: 18px;
-
-    cursor: pointer;
-
-    transition: .25s;
+.nav-join:hover{
+    transform:translateY(-2px);
 }
 
-.page-btn:hover {
-    background: var(--green);
-    color: var(--black);
+/* GENERAL */
+section{
+    padding:110px 0;
+    position:relative;
+    overflow:hidden;
 }
 
-.page-number {
-    color: white;
-
-    background: rgba(16,20,16,.8);
-
-    padding: 12px 17px;
-
-    border-radius: 30px;
-
-    font-size: 12px;
-    font-weight: 700;
+.section-number{
+    color:var(--green);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:2px;
+    margin-bottom:20px;
 }
 
-/* =========================
-   GENERAL
-========================= */
-
-.content {
-    min-height: 100vh;
-    padding: 120px 7% 90px;
-
-    display: flex;
-    align-items: center;
+h1,h2,h3{
+    font-family:"Space Grotesk",sans-serif;
+    line-height:1.05;
+    letter-spacing:-2px;
 }
 
-.section-label {
-    font-size: 13px;
-    font-weight: 700;
-
-    letter-spacing: 2px;
-
-    color: var(--green-dark);
-
-    margin-bottom: 18px;
+h2{
+    font-size:clamp(38px,6vw,72px);
 }
 
-.dark .section-label {
-    color: var(--green);
+p{
+    color:#b9c0b7;
 }
 
-.section-title {
-    font-family: "Space Grotesk";
-
-    font-size: clamp(42px, 6vw, 78px);
-
-    line-height: .98;
-
-    letter-spacing: -4px;
+.eyebrow{
+    display:inline-block;
+    border:1px solid rgba(200,241,105,.4);
+    color:var(--green);
+    padding:7px 13px;
+    border-radius:100px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1px;
+    margin-bottom:25px;
 }
 
-/* =========================
-   PAGE 01 — HERO
-========================= */
-
-#page1 {
-    background: var(--black);
-    color: white;
+/* BUTTONS */
+.buttons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:35px;
 }
 
-.hero-content {
-    max-width: 1050px;
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:15px 24px;
+    border-radius:100px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.5px;
+    transition:.25s;
 }
 
-.hero-small {
-    color: var(--green);
-
-    font-size: 13px;
-    font-weight: 700;
-
-    letter-spacing: 3px;
-
-    margin-bottom: 25px;
+.btn-primary{
+    background:var(--green);
+    color:var(--black);
 }
 
-.hero-title {
-    font-family: "Space Grotesk";
-
-    font-size: clamp(70px, 14vw, 180px);
-
-    line-height: .78;
-
-    letter-spacing: -9px;
-
-    margin-bottom: 35px;
+.btn-secondary{
+    border:1px solid rgba(255,255,255,.25);
+    color:var(--cream);
 }
 
-.hero-tagline {
-    font-size: clamp(24px, 3vw, 40px);
-
-    font-weight: 600;
-
-    line-height: 1.1;
-
-    max-width: 700px;
-
-    margin-bottom: 20px;
+.btn:hover{
+    transform:translateY(-3px);
 }
 
-.hero-description {
-    max-width: 650px;
-
-    color: #aeb6ad;
-
-    font-size: 17px;
-
-    line-height: 1.7;
-
-    margin-bottom: 35px;
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.buttons {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.btn {
-    display: inline-block;
-
-    padding: 15px 24px;
-
-    border-radius: 50px;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    border: none;
-
-    cursor: pointer;
-
-    transition: .25s;
-}
-
-.btn-primary {
-    background: var(--green);
-    color: var(--black);
-}
-
-.btn-secondary {
-    background: transparent;
-
-    color: white;
-
-    border: 1px solid rgba(255,255,255,.3);
-}
-
-.btn-dark {
-    background: var(--black);
-    color: white;
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-}
-
-/* =========================
-   PAGE 02 — WHY
-========================= */
-
-#page2 {
-    background: var(--cream);
-}
-
-.why-grid {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns: 1fr 1.4fr;
-
-    gap: 90px;
-}
-
-.big-statement {
-    font-family: "Space Grotesk";
-
-    font-size: clamp(40px, 5vw, 68px);
-
-    line-height: 1;
-
-    letter-spacing: -4px;
-}
-
-.why-text {
-    color: #586159;
-
-    font-size: 18px;
-
-    line-height: 1.8;
-}
-
-.why-text p {
-    margin-bottom: 22px;
-}
-
-.highlight {
-    color: var(--green-dark);
-    font-weight: 700;
-}
-
-/* =========================
-   PAGE 03 — WHAT
-========================= */
-
-#page3 {
-    background: var(--dark);
-    color: white;
-}
-
-.about-grid {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 80px;
-}
-
-.about-copy {
-    margin-top: 30px;
-
-    color: #b7c0b8;
-
-    font-size: 18px;
-
-    line-height: 1.8;
-}
-
-.about-copy p {
-    margin-bottom: 20px;
-}
-
-.mission {
-    border-left: 2px solid var(--green);
-
-    padding-left: 22px;
-
-    margin-top: 35px;
-}
-
-.mission small {
-    color: var(--gray);
-
-    display: block;
-
-    margin-bottom: 8px;
-}
-
-.mission strong {
-    color: var(--green);
-
-    font-size: 25px;
-}
-
-.treasure-box {
-    min-height: 400px;
-
-    padding: 45px;
-
-    border: 1px solid var(--line);
-
-    border-radius: 25px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
+/* HERO */
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding-top:140px;
     background:
-        radial-gradient(
-            circle at 80% 20%,
-            rgba(200,241,105,.15),
-            transparent 30%
-        );
+        radial-gradient(circle at 80% 20%,rgba(200,241,105,.12),transparent 30%),
+        radial-gradient(circle at 20% 80%,rgba(73,121,66,.15),transparent 35%),
+        var(--black);
 }
 
-.treasure-word {
-    font-family: "Space Grotesk";
-
-    font-size: clamp(50px, 8vw, 100px);
-
-    line-height: .85;
-
-    letter-spacing: -6px;
-
-    font-weight: 700;
+.hero-content{
+    max-width:1100px;
 }
 
-.treasure-word span {
-    color: var(--green);
+/* JUDUL UTAMA TRASHSURE */
+.hero h1{
+    font-size:clamp(75px,14vw,180px);
+    font-weight:700;
+    line-height:.85;
+    letter-spacing:-8px;
+    margin-bottom:35px;
+    color:var(--green);
 }
 
-/* =========================
-   PAGE 04 — HOW
-========================= */
-
-#page4 {
-    background: var(--cream);
+.hero-text{
+    font-size:20px;
+    max-width:680px;
+    color:#d2d7d0;
 }
 
-.steps {
-    width: 100%;
-
-    margin-top: 40px;
-
-    border-top: 1px solid #cfd4cc;
+.hero-note{
+    margin-top:20px;
+    font-size:16px;
+    max-width:650px;
 }
 
-.step {
-    display: grid;
-
-    grid-template-columns: 70px 180px 1fr;
-
-    gap: 25px;
-
-    padding: 22px 0;
-
-    border-bottom: 1px solid #cfd4cc;
+/* WHY */
+.why{
+    background:var(--cream);
+    color:var(--black);
 }
 
-.step-number {
-    color: var(--green-dark);
-
-    font-weight: 700;
+.why p{
+    color:#4f584f;
 }
 
-.step h3 {
-    font-family: "Space Grotesk";
-
-    font-size: 22px;
+.why-grid{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:80px;
+    align-items:center;
 }
 
-.step p {
-    color: #687067;
-
-    line-height: 1.6;
-
-    max-width: 650px;
+.why h2{
+    color:var(--black);
 }
 
-/* =========================
-   PAGE 05 — VOLUNTEER
-========================= */
-
-#page5 {
-    background: var(--green);
-    text-align: center;
+.big-statement{
+    font-size:clamp(25px,3vw,40px);
+    font-family:"Space Grotesk",sans-serif;
+    font-weight:600;
+    line-height:1.2;
+    color:var(--black);
 }
 
-.center-content {
-    width: 100%;
+/* ABOUT */
+.about{
+    background:var(--dark);
 }
 
-.center-text {
-    max-width: 700px;
-
-    margin: 30px auto;
-
-    color: #3d5138;
-
-    font-size: 18px;
-
-    line-height: 1.8;
+.about-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:70px;
 }
 
-/* =========================
-   PAGE 06 — TRASH
-========================= */
-
-#page6 {
-    background: var(--dark);
-    color: white;
+.about-card{
+    border:1px solid var(--line);
+    padding:45px;
+    border-radius:25px;
+    background:rgba(255,255,255,.025);
 }
 
-.process {
-    width: 100%;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 15px;
-
-    margin: 55px 0;
+.about-card h3{
+    color:var(--green);
+    font-size:32px;
+    margin-bottom:20px;
 }
 
-.process-item {
-    flex: 1;
-
-    text-align: center;
-
-    font-family: "Space Grotesk";
-
-    font-size: 19px;
+.quote{
+    font-size:clamp(28px,4vw,48px);
+    color:var(--cream);
+    margin-top:25px;
+    font-family:"Space Grotesk",sans-serif;
 }
 
-.arrow {
-    color: var(--green);
-
-    font-size: 25px;
+/* HOW */
+.how{
+    background:var(--black);
 }
 
-.trash-copy {
-    max-width: 850px;
-
-    color: #aeb8ae;
-
-    font-size: 18px;
-
-    line-height: 1.8;
+.steps{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+    margin-top:55px;
 }
 
-.values {
-    display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 18px;
-
-    margin-top: 30px;
+.step{
+    padding:28px 22px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    min-height:260px;
+    transition:.3s;
 }
 
-.value {
-    padding: 23px;
-
-    border: 1px solid var(--line);
-
-    border-radius: 18px;
-
-    color: #c2c9c2;
+.step:hover{
+    border-color:var(--green);
+    transform:translateY(-5px);
 }
 
-.value strong {
-    display: block;
-
-    color: var(--green);
-
-    font-size: 16px;
-
-    margin-bottom: 8px;
+.step-number{
+    color:var(--green);
+    font-size:13px;
+    font-weight:700;
 }
 
-/* =========================
-   PAGE 07 — IMPACT
-========================= */
-
-#page7 {
-    background: var(--black);
-    color: white;
+.step h3{
+    font-size:25px;
+    margin:25px 0 15px;
 }
 
-.counter-grid {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns: repeat(5, 1fr);
-
-    margin-top: 50px;
-
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
+.step p{
+    font-size:14px;
 }
 
-.counter {
-    padding: 35px 20px;
-
-    border-right: 1px solid var(--line);
+/* VOLUNTEER */
+.volunteer{
+    background:var(--green);
+    color:var(--black);
 }
 
-.counter:last-child {
-    border-right: none;
+.volunteer p{
+    color:#34432f;
+    max-width:650px;
 }
 
-.counter-number {
-    font-family: "Space Grotesk";
-
-    color: var(--green);
-
-    font-size: clamp(35px, 4vw, 60px);
-
-    font-weight: 700;
-
-    line-height: 1;
-
-    margin-bottom: 10px;
+.volunteer h2{
+    color:var(--black);
 }
 
-.counter-label {
-    color: #9fa89f;
-
-    font-size: 13px;
+.volunteer .section-number{
+    color:var(--green-dark);
 }
 
-.updated {
-    color: #707970;
-
-    margin-top: 18px;
-
-    font-size: 12px;
+/* PROCESS */
+.process{
+    background:var(--cream);
+    color:var(--black);
 }
 
-/* =========================
-   PAGE 08 — MOVEMENT
-========================= */
-
-#page8 {
-    background: var(--cream);
-    text-align: center;
+.process p{
+    color:#525b51;
 }
 
-.movement-text {
-    max-width: 750px;
-
-    margin: 30px auto;
-
-    color: #667066;
-
-    font-size: 18px;
-
-    line-height: 1.8;
+.process h2{
+    color:var(--black);
 }
 
-.hashtags {
-    display: flex;
-
-    justify-content: center;
-
-    flex-wrap: wrap;
-
-    gap: 10px;
-
-    margin-top: 30px;
+.process-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    margin-top:55px;
+    border-top:1px solid #c9ccc4;
+    border-bottom:1px solid #c9ccc4;
 }
 
-.hashtag {
-    padding: 11px 17px;
-
-    border: 1px solid #bfc6bc;
-
-    border-radius: 50px;
-
-    font-size: 12px;
-
-    font-weight: 700;
+.process-item{
+    padding:35px 25px;
+    border-right:1px solid #c9ccc4;
 }
 
-/* =========================
-   PAGE 09 — CHALLENGE
-========================= */
-
-#page9 {
-    background: var(--green);
+.process-item:last-child{
+    border-right:none;
 }
 
-.challenge-card {
-    width: 100%;
-
-    background: var(--black);
-
-    color: white;
-
-    border-radius: 30px;
-
-    padding: 55px;
-
-    position: relative;
-
-    overflow: hidden;
+.process-item span{
+    color:var(--green-dark);
+    font-size:13px;
+    font-weight:700;
 }
 
-.challenge-card::after {
-    content: "10";
-
-    position: absolute;
-
-    right: -10px;
-    bottom: -80px;
-
-    font-family: "Space Grotesk";
-
-    font-size: 300px;
-
-    font-weight: 700;
-
-    color: rgba(200,241,105,.06);
+.process-item h3{
+    margin:18px 0 12px;
+    font-size:27px;
 }
 
-.challenge-title {
-    font-family: "Space Grotesk";
-
-    color: var(--green);
-
-    font-size: clamp(45px, 7vw, 85px);
-
-    line-height: .9;
-
-    letter-spacing: -5px;
+/* IMPACT */
+.impact{
+    background:var(--dark);
 }
 
-.challenge-subtitle {
-    font-size: 22px;
-
-    margin: 20px 0 30px;
+.impact-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    gap:30px;
 }
 
-.challenge-list {
-    list-style: none;
-
-    max-width: 650px;
-
-    position: relative;
-
-    z-index: 2;
+.impact-header p{
+    max-width:420px;
 }
 
-.challenge-list li {
-    padding: 13px 0;
-
-    color: #c2c9c2;
-
-    border-bottom: 1px solid var(--line);
+.counter-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:1px;
+    background:var(--line);
+    margin-top:60px;
 }
 
-.challenge-list span {
-    color: var(--green);
-
-    font-weight: 700;
-
-    margin-right: 15px;
+.counter{
+    background:var(--dark);
+    padding:35px 20px;
+    min-height:180px;
 }
 
-/* =========================
-   PAGE 10 — SURVEY
-========================= */
-
-#page10 {
-    background: var(--cream);
-    text-align: center;
+.counter-number{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:45px;
+    color:var(--green);
+    font-weight:700;
 }
 
-.survey-box {
-    max-width: 850px;
-
-    margin: auto;
+.counter-label{
+    margin-top:10px;
+    color:#aeb6ac;
+    font-size:14px;
 }
 
-.survey-box p {
-    color: #687067;
-
-    font-size: 17px;
-
-    line-height: 1.8;
-
-    margin: 25px auto;
-
-    max-width: 700px;
+/* MOVEMENT */
+.movement{
+    background:var(--black);
+    text-align:center;
 }
 
-/* =========================
-   PAGE 11 — FAQ
-========================= */
-
-#page11 {
-    background: #e8e5dc;
+.movement h2{
+    max-width:850px;
+    margin:0 auto;
 }
 
-.faq-list {
-    width: 100%;
-
-    max-width: 900px;
-
-    margin-top: 35px;
+.hashtags{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin-top:35px;
 }
 
-details {
-    border-top: 1px solid #b8beb5;
-
-    padding: 20px 0;
+.hashtag{
+    border:1px solid rgba(200,241,105,.35);
+    color:var(--green);
+    padding:9px 15px;
+    border-radius:100px;
+    font-size:13px;
 }
 
-details:last-child {
-    border-bottom: 1px solid #b8beb5;
+/* CHALLENGE */
+.challenge{
+    background:var(--cream);
+    color:var(--black);
 }
 
-summary {
-    cursor: pointer;
-
-    font-family: "Space Grotesk";
-
-    font-size: 18px;
-
-    font-weight: 600;
-
-    list-style: none;
+.challenge h2{
+    color:var(--black);
 }
 
-summary::after {
-    content: "+";
-
-    float: right;
-
-    font-size: 22px;
+.challenge p{
+    color:#50594f;
 }
 
-details[open] summary::after {
-    content: "−";
+.challenge-box{
+    margin-top:50px;
+    padding:55px;
+    background:var(--black);
+    border-radius:30px;
+    color:var(--cream);
 }
 
-details p {
-    color: #667066;
-
-    line-height: 1.7;
-
-    padding-top: 15px;
-
-    max-width: 750px;
+.challenge-box h3{
+    color:var(--green);
+    font-size:40px;
+    margin-bottom:10px;
 }
 
-/* =========================
-   PAGE 12 — CLOSING
-========================= */
-
-#page12 {
-    background: var(--black);
-    color: white;
-
-    text-align: center;
+.challenge-time{
+    font-size:clamp(45px,8vw,90px);
+    font-family:"Space Grotesk",sans-serif;
+    font-weight:700;
+    margin:20px 0;
 }
 
-.closing-title {
-    font-family: "Space Grotesk";
-
-    font-size: clamp(50px, 9vw, 120px);
-
-    line-height: .88;
-
-    letter-spacing: -7px;
+.challenge-list{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:30px;
 }
 
-.closing-title span {
-    color: var(--green);
+.challenge-list div{
+    border:1px solid var(--line);
+    padding:20px;
+    border-radius:15px;
+    color:#bfc6bd;
 }
 
-.closing-tagline {
-    margin: 30px 0;
-
-    font-size: 24px;
-
-    color: #adb5ad;
+/* SURVEY */
+.survey{
+    background:var(--green-dark);
+    text-align:center;
 }
 
-/* =========================
-   PAGE 13 — CREDIT
-========================= */
-
-#page13 {
-    background: var(--dark);
-    color: white;
-
-    text-align: center;
+.survey h2{
+    color:var(--cream);
 }
 
-.credit-title {
-    font-family: "Space Grotesk";
-
-    color: var(--green);
-
-    font-size: clamp(45px, 7vw, 85px);
-
-    letter-spacing: -4px;
-
-    margin-bottom: 10px;
+.survey p{
+    max-width:600px;
+    margin:20px auto 0;
+    color:#c8d0c5;
 }
 
-.school {
-    font-size: 20px;
-
-    font-weight: 700;
-
-    letter-spacing: 3px;
-
-    margin-bottom: 8px;
+/* FAQ */
+.faq{
+    background:var(--black);
 }
 
-.class-info {
-    color: #aab4aa;
-
-    margin-bottom: 30px;
+.faq-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-top:50px;
 }
 
-.names {
-    max-width: 650px;
-
-    margin: auto;
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 8px;
-
-    text-align: left;
+.faq-item{
+    border:1px solid var(--line);
+    padding:28px;
+    border-radius:18px;
 }
 
-.name {
-    padding: 11px 15px;
-
-    border-left: 3px solid var(--green);
-
-    background: rgba(255,255,255,.05);
-
-    border-radius: 8px;
-
-    font-size: 13px;
-
-    transition: .2s;
+.faq-item h3{
+    font-size:20px;
+    color:var(--green);
+    margin-bottom:10px;
 }
 
-.name:hover {
-    background: rgba(200,241,105,.1);
-
-    transform: translateX(4px);
+.faq-item p{
+    font-size:14px;
 }
 
-.credit-footer {
-    margin-top: 25px;
-
-    color: #6e796f;
-
-    font-size: 12px;
+/* CLOSING */
+.closing{
+    min-height:75vh;
+    display:flex;
+    align-items:center;
+    text-align:center;
+    background:
+        radial-gradient(circle at center,rgba(200,241,105,.12),transparent 40%),
+        var(--dark);
 }
 
-/* =========================
-   MOBILE
-========================= */
+.closing-content{
+    width:100%;
+}
 
-@media (max-width: 900px) {
+.closing h2{
+    font-size:clamp(45px,8vw,100px);
+    max-width:1000px;
+    margin:auto;
+}
 
-    .nav-links {
-        display: none;
-    }
+.closing h2 span{
+    color:var(--green);
+}
 
-    .content {
-        padding: 110px 6% 80px;
+.closing-tagline{
+    margin-top:25px;
+    font-family:"Space Grotesk",sans-serif;
+    font-size:25px;
+    color:var(--cream);
+}
+
+/* CREDITS */
+.credits{
+    margin-top:90px;
+    padding-top:50px;
+    border-top:1px solid var(--line);
+}
+
+.credits-title{
+    color:var(--green);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:2px;
+    margin-bottom:20px;
+}
+
+.credits h3{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.class-info{
+    color:#aeb6ac;
+    font-size:15px;
+    margin-bottom:30px;
+}
+
+.member-list{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px 20px;
+    max-width:900px;
+    margin:0 auto;
+    text-align:left;
+}
+
+.member-list div{
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    color:#c3c9c1;
+    font-size:14px;
+}
+
+.member-list span{
+    color:var(--green);
+    font-weight:700;
+    margin-right:7px;
+}
+
+.credits-bottom{
+    margin-top:40px;
+    font-size:12px;
+    color:#788178;
+}
+
+/* FOOTER */
+footer{
+    background:#0b0e0b;
+    padding:25px 0;
+    text-align:center;
+    color:#667066;
+    font-size:12px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+
+    .nav-links{
+        display:none;
     }
 
     .why-grid,
-    .about-grid {
-        grid-template-columns: 1fr;
-
-        gap: 35px;
+    .about-grid{
+        grid-template-columns:1fr;
+        gap:40px;
     }
 
-    .step {
-        grid-template-columns: 45px 1fr;
+    .steps{
+        grid-template-columns:repeat(2,1fr);
     }
 
-    .step p {
-        grid-column: 2;
+    .process-grid{
+        grid-template-columns:repeat(2,1fr);
     }
 
-    .counter-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .process-item:nth-child(2){
+        border-right:none;
     }
 
-    .counter {
-        border-bottom: 1px solid var(--line);
+    .process-item:nth-child(-n+2){
+        border-bottom:1px solid #c9ccc4;
     }
 
-    .values {
-        grid-template-columns: 1fr;
+    .counter-grid{
+        grid-template-columns:repeat(2,1fr);
     }
 
-    .process {
-        display: grid;
-
-        grid-template-columns: 1fr;
+    .challenge-list{
+        grid-template-columns:1fr;
     }
 
-    .arrow {
-        transform: rotate(90deg);
+    .faq-grid{
+        grid-template-columns:1fr;
     }
 
-    .names {
-        grid-template-columns: 1fr;
+    .member-list{
+        grid-template-columns:1fr 1fr;
     }
 }
 
-@media (max-width: 600px) {
+@media(max-width:600px){
 
-    .navbar {
-        height: 65px;
-
-        padding: 0 5%;
+    section{
+        padding:80px 0;
     }
 
-    .logo {
-        font-size: 20px;
+    .hero h1{
+        font-size:70px;
+        letter-spacing:-5px;
     }
 
-    .nav-button {
-        padding: 10px 13px;
-
-        font-size: 10px;
+    .hero-text{
+        font-size:17px;
     }
 
-    .content {
-        padding-top: 95px;
+    .buttons{
+        flex-direction:column;
     }
 
-    .hero-title {
-        letter-spacing: -5px;
+    .btn{
+        width:100%;
     }
 
-    .section-title {
-        letter-spacing: -2px;
+    .about-card{
+        padding:30px;
     }
 
-    .challenge-card {
-        padding: 30px;
+    .steps{
+        grid-template-columns:1fr;
     }
 
-    .treasure-box {
-        min-height: 280px;
-
-        padding: 30px;
+    .process-grid{
+        grid-template-columns:1fr;
     }
 
-    .counter-grid {
-        grid-template-columns: 1fr 1fr;
+    .process-item{
+        border-right:none!important;
+        border-bottom:1px solid #c9ccc4!important;
     }
 
-    .counter {
-        padding: 22px 12px;
+    .process-item:last-child{
+        border-bottom:none!important;
     }
 
-    .counter-number {
-        font-size: 35px;
+    .counter-grid{
+        grid-template-columns:1fr;
     }
 
-    .page-controls {
-        right: 5%;
-
-        bottom: 15px;
+    .impact-header{
+        display:block;
     }
 
-    .page-btn {
-        width: 40px;
-        height: 40px;
+    .challenge-box{
+        padding:30px;
     }
 
-    .page-number {
-        padding: 10px 13px;
+    .member-list{
+        grid-template-columns:1fr;
     }
 
-    .closing-title {
-        letter-spacing: -4px;
+    .logo{
+        font-size:21px;
     }
 }
 </style>
 </head>
 
-
 <body>
 
-<!-- =========================================
-     NAVBAR
-========================================= -->
-
+<!-- NAVBAR -->
 <nav class="navbar">
+    <div class="container nav-inner">
 
-    <div class="logo" onclick="goToPage(0)">
-        TRASHSURE
+        <a href="#home" class="logo">
+            TRASH<span>SURE</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="#impact">Impact</a></li>
+            <li><a href="#challenge">Challenge</a></li>
+            <li><a href="#survey">Survey</a></li>
+            <li>
+                <a href="#join" class="nav-join">JOIN THE MOVEMENT</a>
+            </li>
+        </ul>
+
     </div>
-
-    <div class="nav-links">
-
-        <button onclick="goToPage(0)">Home</button>
-
-        <button onclick="goToPage(2)">About</button>
-
-        <button onclick="goToPage(3)">How It Works</button>
-
-        <button onclick="goToPage(6)">Impact</button>
-
-        <button onclick="goToPage(8)">Challenge</button>
-
-        <button onclick="goToPage(9)">Survey</button>
-
-    </div>
-
-    <button class="nav-button" onclick="goToPage(4)">
-        JOIN THE MOVEMENT
-    </button>
-
 </nav>
 
 
-<!-- =========================================
-     PAGE CONTROLS
-========================================= -->
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="container hero-content">
 
-<div class="page-controls">
+        <div class="eyebrow">A VOLUNTEER MOVEMENT</div>
 
-    <button class="page-btn" onclick="previousPage()">←</button>
+        <!-- HANYA JUDUL INI YANG DIUBAH -->
+        <h1>TRASHSURE</h1>
 
-    <div class="page-number">
-        <span id="currentPage">01</span>
-        /
-        <span>13</span>
-    </div>
+        <p class="hero-text">
+            Gerakan sukarela bersihkan, kumpulkan, dan beri nilai baru bagi sampah kita.
+        </p>
 
-    <button class="page-btn" onclick="nextPage()">→</button>
+        <p class="hero-note">
+            Kamu datang untuk menikmati acaranya. Sekarang, mari tinggalkan tempat ini dalam keadaan yang lebih baik.
+        </p>
 
-</div>
+        <div class="buttons">
+            <a href="#join" class="btn btn-primary">
+                JOIN THE MOVEMENT
+            </a>
 
-
-<!-- =========================================
-     PAGE 01
-========================================= -->
-
-<section class="page active" id="page1">
-
-    <div class="content">
-
-        <div class="hero-content">
-
-            <div class="hero-small">
-                A VOLUNTEER MOVEMENT
-            </div>
-
-            <h1 class="hero-title">
-                TRASHSURE
-            </h1>
-
-            <div class="hero-tagline">
-                Leave Memories, Not Trash.
-            </div>
-
-            <p class="hero-description">
-                A volunteer movement to clean, collect, and give value
-                back to our waste.
-                <br><br>
-                Kamu datang untuk menikmati acaranya.
-                Sekarang, mari tinggalkan tempat ini dalam keadaan
-                yang lebih baik.
-            </p>
-
-            <div class="buttons">
-
-                <button class="btn btn-primary" onclick="goToPage(4)">
-                    JOIN THE MOVEMENT →
-                </button>
-
-                <button class="btn btn-secondary" onclick="goToPage(3)">
-                    HOW IT WORKS →
-                </button>
-
-            </div>
-
+            <a href="#how" class="btn btn-secondary">
+                HOW IT WORKS
+            </a>
         </div>
 
     </div>
-
 </section>
 
 
-<!-- =========================================
-     PAGE 02
-========================================= -->
+<!-- WHY TRASHSURE -->
+<section class="why" id="about">
+    <div class="container">
 
-<section class="page" id="page2">
+        <div class="section-number">01 — WHY TRASHSURE?</div>
 
-    <div class="content">
+        <div class="why-grid">
 
-        <div style="width:100%;">
-
-            <div class="section-label">
-                01 — WHY TRASHSURE?
+            <div>
+                <h2>
+                    The event ends.<br>
+                    The waste remains.
+                </h2>
             </div>
 
-            <div class="why-grid">
+            <div>
+                <p class="big-statement">
+                    Setiap acara meninggalkan cerita. Namun, sering kali juga meninggalkan sampah.
+                </p>
 
-                <div>
-                    <div class="big-statement">
-                        The event ends.<br>
-                        The waste remains.
-                    </div>
-                </div>
+                <br>
 
-                <div class="why-text">
+                <p>
+                    Botol plastik, bungkus makanan, gelas sekali pakai, dan berbagai jenis sampah lainnya dapat tertinggal setelah acara selesai.
+                </p>
 
-                    <p>
-                        Setiap acara besar meninggalkan sesuatu.
-                    </p>
+                <br>
 
-                    <p>
-                        Bukan hanya kenangan, foto, dan cerita,
-                        tetapi juga botol plastik, kemasan makanan,
-                        gelas sekali pakai, dan berbagai sampah
-                        yang tertinggal di venue.
-                    </p>
-
-                    <p>
-                        Sering kali, kita menganggap membersihkan
-                        semuanya sebagai tanggung jawab petugas kebersihan.
-                    </p>
-
-                    <p>
-                        Tapi bagaimana jika
-                        <span class="highlight">
-                            kita ikut mengambil bagian?
-                        </span>
-                    </p>
-
-                    <p>
-                        Sebagai peserta yang menikmati sebuah acara,
-                        kita juga memiliki tanggung jawab terhadap
-                        tempat yang kita gunakan bersama.
-                    </p>
-
-                    <p>
-                        TRASHSURE hadir untuk mengubah kebiasaan tersebut.
-                    </p>
-
-                </div>
-
+                <p>
+                    TRASHSURE hadir untuk mengajak kita mengambil tanggung jawab bersama dan mengubah kepedulian menjadi aksi nyata.
+                </p>
             </div>
 
         </div>
-
     </div>
-
 </section>
 
 
-<!-- =========================================
-     PAGE 03
-========================================= -->
+<!-- WHAT IS TRASHSURE -->
+<section class="about">
+    <div class="container">
 
-<section class="page dark" id="page3">
-
-    <div class="content">
+        <div class="section-number">02 — WHAT IS TRASHSURE?</div>
 
         <div class="about-grid">
 
             <div>
+                <div class="eyebrow">TRASH + TREASURE</div>
 
-                <div class="section-label">
-                    02 — WHAT IS TRASHSURE?
-                </div>
-
-                <h2 class="section-title">
-                    Trash +<br>
-                    Treasure
+                <h2>
+                    Turning<br>
+                    care into<br>
+                    <span style="color:var(--green)">action.</span>
                 </h2>
-
-                <div class="about-copy">
-
-                    <p>
-                        TRASHSURE adalah gerakan sukarelawan
-                        yang mengajak peserta acara untuk melakukan
-                        post-event cleanup secara sukarela.
-                    </p>
-
-                    <p>
-                        Kami percaya bahwa aksi menjaga lingkungan
-                        tidak harus dimulai dari sesuatu yang besar.
-                    </p>
-
-                    <p>
-                        Satu botol.<br>
-                        Satu bungkus makanan.<br>
-                        Satu orang yang memungut.
-                    </p>
-
-                    <p>
-                        Ketika dilakukan bersama, aksi kecil tersebut
-                        dapat menciptakan perubahan yang lebih besar.
-                    </p>
-
-                    <div class="mission">
-
-                        <small>OUR MISSION</small>
-
-                        <strong>
-                            Mengubah kepedulian menjadi tindakan.
-                        </strong>
-
-                    </div>
-
-                </div>
-
             </div>
 
-            <div class="treasure-box">
+            <div class="about-card">
 
-                <div class="section-label">
-                    THE IDEA
+                <h3>Trash + Treasure</h3>
+
+                <p>
+                    TRASHSURE adalah gerakan sukarelawan setelah acara yang mengajak peserta untuk membersihkan, mengumpulkan, memilah, dan memberikan nilai kembali kepada sampah.
+                </p>
+
+                <div class="quote">
+                    “Mengubah kepedulian menjadi tindakan.”
                 </div>
 
-                <div class="treasure-word">
-                    TRASH<br>
-                    <span>→ TREASURE</span>
-                </div>
+                <br>
 
-                <p style="color:#aeb8ae;line-height:1.7;">
-                    Sampah yang dikumpulkan dapat memiliki nilai.
-                    Namun nilai terbesar adalah ketika kita mulai peduli.
+                <p>
+                    Satu botol yang diambil. Satu bungkus makanan yang dipungut. Satu orang yang memilih untuk peduli.
                 </p>
 
             </div>
 
         </div>
-
     </div>
-
 </section>
 
 
-<!-- =========================================
-     PAGE 04
-========================================= -->
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+    <div class="container">
 
-<section class="page" id="page4">
+        <div class="section-number">03 — HOW IT WORKS</div>
 
-    <div class="content">
+        <h2>JOIN. PICK.<br>SORT. GIVE.</h2>
 
-        <div style="width:100%;">
+        <div class="steps">
 
-            <div class="section-label">
-                03 — HOW IT WORKS
+            <div class="step">
+                <div class="step-number">01</div>
+                <h3>JOIN</h3>
+                <p>
+                    Datang dan bergabung bersama volunteer setelah acara selesai.
+                </p>
             </div>
 
-            <h2 class="section-title">
-                JOIN. PICK.<br>
-                SORT. GIVE.
-            </h2>
+            <div class="step">
+                <div class="step-number">02</div>
+                <h3>PICK</h3>
+                <p>
+                    Ambil sampah yang aman untuk dikumpulkan di sekitar area acara.
+                </p>
+            </div>
 
-            <div class="steps">
+            <div class="step">
+                <div class="step-number">03</div>
+                <h3>SORT</h3>
+                <p>
+                    Pisahkan sampah berdasarkan jenisnya agar dapat dikelola dengan lebih baik.
+                </p>
+            </div>
 
-                <div class="step">
-                    <div class="step-number">01</div>
+            <div class="step">
+                <div class="step-number">04</div>
+                <h3>GIVE</h3>
+                <p>
+                    Salurkan sampah bernilai ke bank sampah atau pihak pengelola yang sesuai.
+                </p>
+            </div>
 
-                    <h3>JOIN</h3>
+            <div class="step">
+                <div class="step-number">05</div>
+                <h3>IMPACT</h3>
+                <p>
+                    Bersama-sama menciptakan lingkungan acara yang lebih bersih dan meningkatkan kesadaran.
+                </p>
+            </div>
 
-                    <p>
-                        Setelah acara selesai, jangan langsung pergi.
-                        Luangkan beberapa menit untuk menjadi bagian
-                        dari Trashsure Volunteers.
-                    </p>
-                </div>
+        </div>
+    </div>
+</section>
 
-                <div class="step">
-                    <div class="step-number">02</div>
 
-                    <h3>PICK</h3>
+<!-- VOLUNTEER -->
+<section class="volunteer" id="join">
+    <div class="container">
 
-                    <p>
-                        Lihat sekelilingmu. Temukan sampah yang tertinggal
-                        dan kumpulkan sampah yang dapat kamu ambil dengan aman.
-                    </p>
-                </div>
+        <div class="section-number">04 — BE A TRASHSURE VOLUNTEER</div>
 
-                <div class="step">
-                    <div class="step-number">03</div>
+        <h2>
+            You don’t need a title<br>
+            to make an impact.
+        </h2>
 
-                    <h3>SORT</h3>
+        <br>
 
-                    <p>
-                        Pisahkan sampah berdasarkan jenisnya.
-                        Botol plastik, kaleng, kardus, dan material lainnya
-                        dapat memiliki nilai yang berbeda.
-                    </p>
-                </div>
+        <p>
+            Menjadi volunteer TRASHSURE bukan tentang jabatan atau penghargaan.
+            Ini tentang kemauan untuk melakukan sesuatu yang sederhana namun berarti.
+        </p>
 
-                <div class="step">
-                    <div class="step-number">04</div>
+        <p style="margin-top:15px;">
+            Mulai dari mengambil satu sampah. Mengajak satu teman.
+            Membuat satu tempat menjadi lebih bersih.
+        </p>
 
-                    <h3>GIVE</h3>
+        <div class="buttons">
+            <a href="#challenge" class="btn" style="background:var(--black);color:var(--green);">
+                BECOME A VOLUNTEER
+            </a>
+        </div>
 
-                    <p>
-                        Sampah yang memiliki nilai akan dikumpulkan
-                        dan disalurkan kepada bank sampah untuk
-                        dikelola lebih lanjut.
-                    </p>
-                </div>
+    </div>
+</section>
 
-                <div class="step">
-                    <div class="step-number">05</div>
 
-                    <h3>IMPACT</h3>
+<!-- FROM TRASH TO TREASURE -->
+<section class="process">
+    <div class="container">
 
-                    <p>
-                        Venue menjadi lebih bersih.
-                        Sampah tidak langsung berakhir sebagai limbah.
-                        Dan yang paling penting: kita membangun kebiasaan
-                        untuk peduli.
-                    </p>
-                </div>
+        <div class="section-number">05 — FROM TRASH TO TREASURE</div>
 
+        <h2>What happens<br>to the waste?</h2>
+
+        <div class="process-grid">
+
+            <div class="process-item">
+                <span>01</span>
+                <h3>COLLECT</h3>
+                <p>
+                    Sampah dikumpulkan setelah kegiatan berlangsung.
+                </p>
+            </div>
+
+            <div class="process-item">
+                <span>02</span>
+                <h3>SORT</h3>
+                <p>
+                    Sampah dipilah berdasarkan jenis dan kondisi.
+                </p>
+            </div>
+
+            <div class="process-item">
+                <span>03</span>
+                <h3>WEIGH</h3>
+                <p>
+                    Sampah ditimbang untuk mengetahui jumlah yang berhasil dikumpulkan.
+                </p>
+            </div>
+
+            <div class="process-item">
+                <span>04</span>
+                <h3>DISTRIBUTE</h3>
+                <p>
+                    Sampah yang memiliki nilai dapat disalurkan ke bank sampah.
+                </p>
             </div>
 
         </div>
 
-    </div>
-
-</section>
-
-
-<!-- =========================================
-     PAGE 05
-========================================= -->
-
-<section class="page" id="page5">
-
-    <div class="content">
-
-        <div class="center-content">
-
-            <div class="section-label">
-                04 — BE A TRASHSURE VOLUNTEER
-            </div>
-
-            <h2 class="section-title">
-                You don’t need a title<br>
-                to make an impact.
-            </h2>
-
-            <div class="center-text">
-
-                <p>
-                    Kamu tidak perlu menjadi bagian dari organisasi tertentu.
-                    Tidak perlu menjadi panitia.
-                    Tidak perlu menunggu seseorang menyuruhmu.
-                </p>
-
-                <p>
-                    Kalau kamu melihat sampah,
-                    kamu bisa mengambil tindakan.
-                </p>
-
-                <p>
-                    TRASHSURE percaya bahwa volunteer bukan hanya
-                    seseorang yang memiliki seragam atau jabatan.
-                    Volunteer adalah seseorang yang memilih untuk
-                    peduli dan bertindak.
-                </p>
-
-            </div>
-
-            <button class="btn btn-dark" onclick="goToPage(8)">
-                BECOME A VOLUNTEER →
-            </button>
-
+        <div style="margin-top:35px;max-width:750px;">
+            <p>
+                Nilai ekonomi bukan satu-satunya tujuan. Nilai sebenarnya adalah ketika seseorang memilih untuk peduli, bertindak, dan membuat tempat menjadi lebih bersih.
+            </p>
         </div>
 
     </div>
-
 </section>
 
 
-<!-- =========================================
-     PAGE 06
-========================================= -->
+<!-- IMPACT -->
+<section class="impact" id="impact">
+    <div class="container">
 
-<section class="page dark" id="page6">
+        <div class="section-number">06 — YOUR IMPACT</div>
 
-    <div class="content">
+        <div class="impact-header">
 
-        <div style="width:100%;">
-
-            <div class="section-label">
-                05 — FROM TRASH TO TREASURE
-            </div>
-
-            <h2 class="section-title">
-                What happens<br>
-                to the waste?
+            <h2>
+                See the<br>
+                difference.
             </h2>
 
-            <div class="process">
-
-                <div class="process-item">
-                    COLLECT
-                </div>
-
-                <div class="arrow">→</div>
-
-                <div class="process-item">
-                    SORT
-                </div>
-
-                <div class="arrow">→</div>
-
-                <div class="process-item">
-                    WEIGH
-                </div>
-
-                <div class="arrow">→</div>
-
-                <div class="process-item">
-                    DISTRIBUTE
-                </div>
-
-            </div>
-
-            <div class="trash-copy">
-
-                <p>
-                    Sampah yang dikumpulkan tidak sekadar dibuang.
-                    Sampah akan dikumpulkan, dipilah, ditimbang,
-                    kemudian disalurkan kepada bank sampah untuk dikelola.
-                </p>
-
-                <p style="margin-top:20px;">
-                    Hasil ekonominya mungkin tidak selalu besar.
-                    <strong style="color:white;">
-                        But that’s not the point.
-                    </strong>
-                </p>
-
-                <p style="margin-top:20px;">
-                    Nilai utama TRASHSURE bukan hanya berapa rupiah
-                    yang dihasilkan dari sampah.
-                </p>
-
-            </div>
-
-            <div class="values">
-
-                <div class="value">
-                    <strong>01</strong>
-                    Berapa banyak orang yang mulai peduli.
-                </div>
-
-                <div class="value">
-                    <strong>02</strong>
-                    Berapa banyak orang yang mau mengambil tindakan.
-                </div>
-
-                <div class="value">
-                    <strong>03</strong>
-                    Berapa banyak tempat yang menjadi lebih bersih karena kita.
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================================
-     PAGE 07
-========================================= -->
-
-<section class="page dark" id="page7">
-
-    <div class="content">
-
-        <div style="width:100%;">
-
-            <div class="section-label">
-                06 — YOUR IMPACT
-            </div>
-
-            <h2 class="section-title">
-                TRASHSURE<br>
-                IMPACT
-            </h2>
-
-            <div class="counter-grid">
-
-                <div class="counter">
-                    <div class="counter-number" data-target="125">
-                        0
-                    </div>
-
-                    <div class="counter-label">
-                        Volunteers
-                    </div>
-                </div>
-
-                <div class="counter">
-                    <div class="counter-number" data-target="387">
-                        0
-                    </div>
-
-                    <div class="counter-label">
-                        kg Waste Collected
-                    </div>
-                </div>
-
-                <div class="counter">
-                    <div class="counter-number" data-target="240">
-                        0
-                    </div>
-
-                    <div class="counter-label">
-                        kg Recyclable Waste
-                    </div>
-                </div>
-
-                <div class="counter">
-                    <div class="counter-number" data-target="1">
-                        0
-                    </div>
-
-                    <div class="counter-label">
-                        Bank Sampah Supported
-                    </div>
-                </div>
-
-                <div class="counter">
-                    <div class="counter-number" data-target="1">
-                        0
-                    </div>
-
-                    <div class="counter-label">
-                        Event Made Cleaner
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="updated">
+            <p>
                 Angka diperbarui setelah kegiatan berlangsung.
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================================
-     PAGE 08
-========================================= -->
-
-<section class="page" id="page8">
-
-    <div class="content">
-
-        <div class="center-content">
-
-            <div class="section-label">
-                07 — THE MOVEMENT
-            </div>
-
-            <h2 class="section-title">
-                One event can<br>
-                start a movement.
-            </h2>
-
-            <div class="movement-text">
-
-                <p>
-                    Gerakan lingkungan tidak selalu dimulai
-                    dari organisasi besar.
-                    Kadang dimulai dari beberapa orang yang memutuskan:
-                </p>
-
-                <p style="font-weight:700;color:#35552e;">
-                    “Gue nggak mau ninggalin tempat ini dengan sampah.”
-                </p>
-
-                <p>
-                    TRASHSURE ingin membawa semangat tersebut lebih jauh.
-                    Setelah kegiatan, dokumentasikan aksi kalian.
-                    Post it. Tag your friends. Share the movement.
-                </p>
-
-            </div>
-
-            <div class="hashtags">
-
-                <div class="hashtag">
-                    #TRASHSURE
-                </div>
-
-                <div class="hashtag">
-                    #LeaveMemoriesNotTrash
-                </div>
-
-                <div class="hashtag">
-                    #CollectTrashCreateTreasure
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================================
-     PAGE 09
-========================================= -->
-
-<section class="page" id="page9">
-
-    <div class="content">
-
-        <div class="challenge-card">
-
-            <div class="section-label">
-                08 — TAKE THE CHALLENGE
-            </div>
-
-            <h2 class="challenge-title">
-                THE TRASHSURE<br>
-                CHALLENGE
-            </h2>
-
-            <div class="challenge-subtitle">
-                Can you make a difference in 10 minutes?
-            </div>
-
-            <p style="color:#aeb8ae;line-height:1.7;margin-bottom:25px;">
-                Setelah event:
-                <strong style="color:white;">
-                    10 MINUTES.
-                    1 VENUE.
-                    AS MUCH WASTE AS YOU CAN COLLECT.
-                </strong>
-            </p>
-
-            <ul class="challenge-list">
-
-                <li>
-                    <span>01</span>
-                    Set timer 10 menit
-                </li>
-
-                <li>
-                    <span>02</span>
-                    Ajak temanmu
-                </li>
-
-                <li>
-                    <span>03</span>
-                    Kumpulkan sampah di sekitar venue
-                </li>
-
-                <li>
-                    <span>04</span>
-                    Pilah sampah
-                </li>
-
-                <li>
-                    <span>05</span>
-                    Foto/video hasilnya
-                </li>
-
-                <li>
-                    <span>06</span>
-                    Upload dan gunakan #TRASHSURE
-                </li>
-
-            </ul>
-
-            <p style="margin-top:30px;color:#c8f169;font-weight:700;">
-                Don’t just watch the movement.<br>
-                Be the movement.
+                Setiap angka mewakili tindakan nyata dari para volunteer.
             </p>
 
         </div>
 
-    </div>
+        <div class="counter-grid">
 
+            <div class="counter">
+                <div class="counter-number" data-target="125">0</div>
+                <div class="counter-label">Volunteers</div>
+            </div>
+
+            <div class="counter">
+                <div class="counter-number" data-target="387">0</div>
+                <div class="counter-label">kg Waste Collected</div>
+            </div>
+
+            <div class="counter">
+                <div class="counter-number" data-target="240">0</div>
+                <div class="counter-label">kg Recyclable Waste</div>
+            </div>
+
+            <div class="counter">
+                <div class="counter-number" data-target="1">0</div>
+                <div class="counter-label">Bank Sampah Supported</div>
+            </div>
+
+            <div class="counter">
+                <div class="counter-number" data-target="1">0</div>
+                <div class="counter-label">Event Made Cleaner</div>
+            </div>
+
+        </div>
+
+    </div>
 </section>
 
 
-<!-- =========================================
-     PAGE 10 — SURVEY
-========================================= -->
+<!-- MOVEMENT -->
+<section class="movement">
+    <div class="container">
 
-<section class="page" id="page10">
+        <div class="section-number">07 — THE MOVEMENT</div>
 
-    <div class="content">
+        <h2>
+            One event can<br>
+            start a <span style="color:var(--green)">movement.</span>
+        </h2>
 
-        <div class="survey-box">
+        <p style="max-width:650px;margin:30px auto 0;">
+            Bagikan aksi kamu. Ajak temanmu. Tunjukkan bahwa menjaga kebersihan bukan hanya tugas seseorang, tetapi gerakan bersama.
+        </p>
 
-            <div class="section-label">
-                09 — YOUR VOICE MATTERS
+        <div class="hashtags">
+            <span class="hashtag">#TRASHSURE</span>
+            <span class="hashtag">#LeaveMemoriesNotTrash</span>
+            <span class="hashtag">#CollectTrashCreateTreasure</span>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- CHALLENGE -->
+<section class="challenge" id="challenge">
+    <div class="container">
+
+        <div class="section-number">08 — TAKE THE CHALLENGE</div>
+
+        <h2>
+            THE TRASHSURE<br>
+            CHALLENGE
+        </h2>
+
+        <p style="margin-top:20px;font-size:20px;">
+            Can you make a difference in 10 minutes?
+        </p>
+
+        <div class="challenge-box">
+
+            <h3>10 MINUTES.</h3>
+
+            <div class="challenge-time">
+                1 VENUE.
             </div>
-
-            <h2 class="section-title">
-                Did TRASHSURE change<br>
-                the way you see waste?
-            </h2>
 
             <p>
-                Bantu kami mengetahui apakah campaign ini benar-benar
-                memberikan pengaruh.
+                AS MUCH WASTE AS YOU CAN COLLECT.
             </p>
 
-            <p>
-                Survei hanya membutuhkan ±2–3 menit.
-                Jawaban digunakan untuk mengevaluasi kesadaran,
-                sikap, dan kecenderungan peserta untuk melakukan
-                aksi kebersihan secara sukarela.
-            </p>
+            <div class="challenge-list">
 
-            <!-- GOOGLE FORM -->
+                <div>
+                    <strong>01</strong><br>
+                    Set timer 10 minutes.
+                </div>
+
+                <div>
+                    <strong>02</strong><br>
+                    Invite your friends.
+                </div>
+
+                <div>
+                    <strong>03</strong><br>
+                    Collect the waste.
+                </div>
+
+                <div>
+                    <strong>04</strong><br>
+                    Sort the waste.
+                </div>
+
+                <div>
+                    <strong>05</strong><br>
+                    Take a photo/video.
+                </div>
+
+                <div>
+                    <strong>06</strong><br>
+                    Upload with #TRASHSURE.
+                </div>
+
+            </div>
+
+            <div class="buttons">
+                <a href="#survey" class="btn btn-primary">
+                    TAKE THE CHALLENGE
+                </a>
+            </div>
+
+        </div>
+
+        <p style="margin-top:35px;font-family:'Space Grotesk';font-size:25px;color:var(--black);">
+            Don’t just watch the movement.<br>
+            <strong>Be the movement.</strong>
+        </p>
+
+    </div>
+</section>
+
+
+<!-- SURVEY -->
+<section class="survey" id="survey">
+    <div class="container">
+
+        <div class="section-number">09 — YOUR VOICE MATTERS</div>
+
+        <h2>
+            Did TRASHSURE change<br>
+            the way you see waste?
+        </h2>
+
+        <p>
+            Isi survei selama 2–3 menit. Jawabanmu akan digunakan untuk mengevaluasi kesadaran, sikap, dan tindakan sukarela dalam menjaga kebersihan lingkungan.
+        </p>
+
+        <div class="buttons" style="justify-content:center;">
             <a
-                class="btn btn-primary"
                 href="https://docs.google.com/forms/d/e/1FAIpQLScJhzbZqcBCUSDrplu962G3dOHDHFv6FYSCzJqQMtDyhg1blA/viewform?usp=sharing&ouid=106519085854526825441"
                 target="_blank"
                 rel="noopener noreferrer"
+                class="btn btn-primary"
             >
-                TAKE THE SURVEY →
+                TAKE THE SURVEY
             </a>
-
         </div>
 
     </div>
-
 </section>
 
 
-<!-- =========================================
-     PAGE 11 — FAQ
-========================================= -->
+<!-- FAQ -->
+<section class="faq">
+    <div class="container">
 
-<section class="page" id="page11">
+        <div class="section-number">10 — FAQ</div>
 
-    <div class="content">
+        <h2>
+            Questions?<br>
+            We got you.
+        </h2>
 
-        <div style="width:100%;">
+        <div class="faq-grid">
 
-            <div class="section-label">
-                10 — FAQ
+            <div class="faq-item">
+                <h3>Apakah TRASHSURE volunteer resmi?</h3>
+                <p>
+                    Tidak. TRASHSURE merupakan gerakan sukarelawan yang terbuka bagi peserta yang ingin ikut menjaga kebersihan setelah acara.
+                </p>
             </div>
 
-            <h2 class="section-title">
-                Frequently Asked<br>
-                Questions
-            </h2>
+            <div class="faq-item">
+                <h3>Kapan TRASHSURE dilakukan?</h3>
+                <p>
+                    Setelah acara selesai atau pada waktu yang telah ditentukan oleh panitia dan pihak venue.
+                </p>
+            </div>
 
-            <div class="faq-list">
+            <div class="faq-item">
+                <h3>Apakah sampah akan dijual?</h3>
+                <p>
+                    Sampah yang memiliki nilai dapat disalurkan kepada bank sampah untuk dikelola lebih lanjut.
+                </p>
+            </div>
 
-                <details>
-                    <summary>
-                        Apakah saya harus menjadi volunteer resmi?
-                    </summary>
+            <div class="faq-item">
+                <h3>Apakah saya mendapatkan uang?</h3>
+                <p>
+                    Tidak. TRASHSURE merupakan gerakan sukarelawan yang berfokus pada dampak lingkungan dan peningkatan kesadaran.
+                </p>
+            </div>
 
-                    <p>
-                        Tidak. TRASHSURE terbuka bagi siapa saja
-                        yang ingin ikut berkontribusi secara sukarela.
-                    </p>
-                </details>
-
-                <details>
-                    <summary>
-                        Kapan saya bisa ikut?
-                    </summary>
-
-                    <p>
-                        Aksi dilakukan setelah acara selesai atau
-                        pada waktu yang telah ditentukan oleh penyelenggara.
-                    </p>
-                </details>
-
-                <details>
-                    <summary>
-                        Apakah sampah yang dikumpulkan dijual?
-                    </summary>
-
-                    <p>
-                        Sampah yang memiliki nilai dapat disalurkan
-                        kepada bank sampah untuk dikelola lebih lanjut.
-                    </p>
-                </details>
-
-                <details>
-                    <summary>
-                        Apakah saya mendapatkan uang?
-                    </summary>
-
-                    <p>
-                        Tidak. TRASHSURE merupakan gerakan sukarela.
-                        Tujuan utamanya adalah menciptakan dampak lingkungan
-                        dan membangun kesadaran bersama.
-                    </p>
-                </details>
-
-                <details>
-                    <summary>
-                        Apa yang harus saya lakukan jika menemukan
-                        sampah berbahaya?
-                    </summary>
-
-                    <p>
-                        Jangan mengambil sampah yang berpotensi membahayakan.
-                        Laporkan kepada panitia atau petugas venue.
-                    </p>
-                </details>
-
+            <div class="faq-item">
+                <h3>Bagaimana dengan sampah berbahaya?</h3>
+                <p>
+                    Jangan mengambil sampah yang berbahaya. Laporkan kepada panitia atau petugas venue.
+                </p>
             </div>
 
         </div>
 
     </div>
-
 </section>
 
 
-<!-- =========================================
-     PAGE 12 — CLOSING
-========================================= -->
+<!-- CLOSING + CREDITS -->
+<section class="closing">
+    <div class="container closing-content">
 
-<section class="page dark" id="page12">
+        <div class="section-number">11 — CLOSING</div>
 
-    <div class="content">
+        <h2>
+            THE EVENT ENDS.<br>
+            THE <span>MOVEMENT</span><br>
+            DOESN’T.
+        </h2>
 
-        <div class="center-content">
-
-            <h2 class="closing-title">
-                THE EVENT<br>
-                ENDS.<br>
-                <span>
-                    THE MOVEMENT<br>
-                    DOESN’T.
-                </span>
-            </h2>
-
-            <div class="closing-tagline">
-                Leave Memories, Not Trash.
-            </div>
-
-            <button class="btn btn-primary" onclick="goToPage(4)">
-                JOIN TRASHSURE →
-            </button>
-
+        <div class="closing-tagline">
+            Leave Memories, Not Trash.
         </div>
 
-    </div>
+        <div class="buttons" style="justify-content:center;">
+            <a href="#join" class="btn btn-primary">
+                JOIN TRASHSURE
+            </a>
+        </div>
 
-</section>
+        <div class="hashtags">
+            <span class="hashtag">#TRASHSURE</span>
+        </div>
 
 
-<!-- =========================================
-     PAGE 13 — CREDIT
-========================================= -->
+        <!-- CREDITS -->
+        <div class="credits">
 
-<section class="page dark" id="page13">
-
-    <div class="content">
-
-        <div class="center-content">
-
-            <div class="section-label">
-                TRASHSURE TEAM
+            <div class="credits-title">
+                PROJECT CREDITS
             </div>
 
-            <div class="school">
-                SMAN 3 BANDUNG
-            </div>
+            <h3>SMAN 3 BANDUNG</h3>
 
             <div class="class-info">
-                XII-2 · KELOMPOK 2
+                XII-2 &nbsp;•&nbsp; KELOMPOK 2
             </div>
 
-            <h2 class="credit-title">
-                CREDITS
-            </h2>
+            <div class="member-list">
 
-            <div class="names">
-
-                <div class="name">
-                    1. AMANDA FAHIRA
+                <div>
+                    <span>01.</span>
+                    AMANDA FAHIRA
                 </div>
 
-                <div class="name">
-                    2. CHYMTA DIAH HARUM LAURA
+                <div>
+                    <span>02.</span>
+                    CHYMTA DIAH HARUM LAURA
                 </div>
 
-                <div class="name">
-                    3. KEANU ALMANZO TRISTANKA
+                <div>
+                    <span>03.</span>
+                    KEANU ALMANZO TRISTANKA
                 </div>
 
-                <div class="name">
-                    4. MEDINA KAYLA NAFEESA
+                <div>
+                    <span>04.</span>
+                    MEDINA KAYLA NAFEESA
                 </div>
 
-                <div class="name">
-                    5. NASYWAH ZAHIDAH KHOYRUNNAS
+                <div>
+                    <span>05.</span>
+                    NASYWAH ZAHIDAH KHOYRUNNAS
                 </div>
 
-                <div class="name">
-                    6. RAFSANJANI ALVARO ASADEL
+                <div>
+                    <span>06.</span>
+                    RAFSANJANI ALVARO ASADEL
                 </div>
 
-                <div class="name">
-                    7. RAINA SASKIA TANJUNG
+                <div>
+                    <span>07.</span>
+                    RAINA SASKIA TANJUNG
                 </div>
 
-                <div class="name">
-                    8. RAKHA MAHARDIKA
+                <div>
+                    <span>08.</span>
+                    RAKHA MAHARDIKA
                 </div>
 
-                <div class="name">
-                    9. XANDER GHAILAN ZULKARNAIN
+                <div>
+                    <span>09.</span>
+                    XANDER GHAILAN ZULKARNAIN
                 </div>
 
             </div>
 
-            <div class="credit-footer">
-                LEAVE MEMORIES, NOT TRASH.
+            <div class="credits-bottom">
+                TRASHSURE © 2026 — Leave Memories, Not Trash.
             </div>
 
         </div>
 
     </div>
-
 </section>
 
 
-<!-- =========================================
-     JAVASCRIPT
-========================================= -->
+<footer>
+    TRASHSURE — Collect Trash. Create Treasure.
+</footer>
+
 
 <script>
 
-let currentPage = 0;
+/* IMPACT COUNTER */
 
-const pages = document.querySelectorAll(".page");
+const counters = document.querySelectorAll(".counter-number");
 
-const navButtons = document.querySelectorAll(".nav-links button");
-
-const pageCounter = document.getElementById("currentPage");
-
-
-/* =========================================
-   GO TO PAGE
-========================================= */
-
-function goToPage(index) {
-
-    if (index < 0) {
-        index = 0;
-    }
-
-    if (index >= pages.length) {
-        index = pages.length - 1;
-    }
-
-    pages.forEach((page, i) => {
-
-        page.classList.remove("active");
-
-        if (i === index) {
-            page.classList.add("active");
-        }
-
-    });
-
-    currentPage = index;
-
-    pageCounter.textContent =
-        String(index + 1).padStart(2, "0");
-
-
-    /* Reset internal scroll */
-    pages[index].scrollTop = 0;
-
-
-    /* Navbar active state */
-
-    navButtons.forEach(button => {
-        button.classList.remove("active");
-    });
-
-    if (index === 0) {
-        navButtons[0].classList.add("active");
-    }
-
-    if (index === 2) {
-        navButtons[1].classList.add("active");
-    }
-
-    if (index === 3) {
-        navButtons[2].classList.add("active");
-    }
-
-    if (index === 6) {
-        navButtons[3].classList.add("active");
-    }
-
-    if (index === 8) {
-        navButtons[4].classList.add("active");
-    }
-
-    if (index === 9) {
-        navButtons[5].classList.add("active");
-    }
-
-
-    /* Impact animation */
-
-    if (index === 6) {
-        animateCounters();
-    }
-
-}
-
-
-/* =========================================
-   NEXT PAGE
-========================================= */
-
-function nextPage() {
-
-    if (currentPage < pages.length - 1) {
-        goToPage(currentPage + 1);
-    }
-
-}
-
-
-/* =========================================
-   PREVIOUS PAGE
-========================================= */
-
-function previousPage() {
-
-    if (currentPage > 0) {
-        goToPage(currentPage - 1);
-    }
-
-}
-
-
-/* =========================================
-   KEYBOARD NAVIGATION
-========================================= */
-
-document.addEventListener("keydown", function(event) {
-
-    if (event.key === "ArrowRight") {
-        nextPage();
-    }
-
-    if (event.key === "ArrowLeft") {
-        previousPage();
-    }
-
-});
-
-
-/* =========================================
-   IMPACT COUNTERS
-========================================= */
-
-let counterAnimated = false;
-
-function animateCounters() {
-
-    if (counterAnimated) {
-        return;
-    }
-
-    counterAnimated = true;
-
-    const counters =
-        document.querySelectorAll(".counter-number");
+const animateCounters = () => {
 
     counters.forEach(counter => {
 
-        const target =
-            Number(counter.dataset.target);
-
+        const target = Number(counter.getAttribute("data-target"));
         let current = 0;
 
-        const increment =
-            Math.max(1, Math.ceil(target / 45));
+        const increment = Math.max(1, Math.ceil(target / 60));
 
-        function updateCounter() {
+        const update = () => {
 
             current += increment;
 
-            if (current >= target) {
-
+            if(current >= target){
                 counter.textContent = target;
-
                 return;
             }
 
             counter.textContent = current;
+            requestAnimationFrame(update);
+        };
 
-            requestAnimationFrame(updateCounter);
-        }
-
-        updateCounter();
+        update();
 
     });
 
-}
+};
 
 
-/* =========================================
-   INITIAL PAGE
-========================================= */
+/* RUN COUNTER WHEN IMPACT IS VISIBLE */
 
-goToPage(0);
+const impactSection = document.querySelector("#impact");
+
+const observer = new IntersectionObserver(entries => {
+
+    if(entries[0].isIntersecting){
+
+        animateCounters();
+
+        observer.disconnect();
+
+    }
+
+},{
+    threshold:.25
+});
+
+observer.observe(impactSection);
+
+
+/* ACTIVE NAVBAR */
+
+const sections = document.querySelectorAll("section[id]");
+const navLinks = document.querySelectorAll(".nav-links a");
+
+window.addEventListener("scroll", () => {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+        const sectionTop = section.offsetTop - 180;
+        const sectionHeight = section.offsetHeight;
+
+        if(
+            window.scrollY >= sectionTop &&
+            window.scrollY < sectionTop + sectionHeight
+        ){
+            current = section.getAttribute("id");
+        }
+
+    });
+
+    navLinks.forEach(link => {
+
+        link.classList.remove("active");
+
+        if(link.getAttribute("href") === "#" + current){
+            link.classList.add("active");
+        }
+
+    });
+
+});
 
 </script>
 
